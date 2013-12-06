@@ -1,0 +1,59 @@
+		.modal-wide .modal-dialog {
+			width: 80%;
+		}
+
+		#ganttHeading {
+			cursor:pointer;
+		}
+
+		body {
+			padding-top: 50px;
+		}
+
+		#alert {
+			display: none;
+		}
+		
+		#taskColor {
+			z-index: 99999;
+		}
+		
+		#perComplete {
+			width: 110px;
+		}
+		
+		#ex6CurrentSliderValLabel {
+			width: 34px;
+			height: 34px;
+			font-size: 15px;
+			padding-left: 10px;
+			padding-right: 10px;
+			border: 1px solid #888;
+			border-radius: 3px;
+		}
+		
+		#perComplete {
+			padding-left: 40px;
+			padding-right: 40px;
+		}
+		
+		#ex6SliderVal {
+			width: 34px;
+			height: 34px;
+		}
+		
+		#taskResource {
+			width: 100%;
+		}
+		
+		#taskParent {
+			width: 100%;
+		}
+		
+		#taskDepend {
+			width: 100%;
+		}
+    
+		#groupParent {
+			width: 100%;
+		}

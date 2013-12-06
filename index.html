@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Quick Gantt</title>
+<!-- Bootstrap core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/select2.css" rel="stylesheet">
+<link href="css/datepicker.css" rel="stylesheet">
+<link href="css/bootstrap-colorpicker.css" rel="stylesheet">
+<link href="css/typeahead.js-bootstrap.css" rel="stylesheet">
+<link href="css/slider.css" rel="stylesheet">
+<link href="css/jsgantt.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="css/p3.css" rel="stylesheet">
+
+<!-- Just for debugging purposes. Don't actually copy this line! -->
+<!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+</head>
+<body>
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Quick Gantt</a>
+      </div>
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">New</a>
+            <ul class="dropdown-menu">
+              <li><a href="#" id="newTask">Task</a></li>
+              <li><a href="#" id="newGroup">Group</a></li>
+              <li><a href="#" id="newMilestone">Milestone</a></li>
+            </ul></li>
+          <li><a href="#" id="printThis">Print</a></li>
+          <li><a href="#contact">About</a></li>
+        </ul>
+      </div>
+      <!--/.nav-collapse -->
+    </div>
+  </div>
+  <div class="container">
+    <!-- Welcome Modal -->
+    <div class="modal fade modal-wide" id="welcomeWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="f" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Hello and welcome to</h4>
+          </div>
+          <div class="modal-body">
+            <form role="form">
+              <div class="jumbotron">
+                <h1>Quick Gantt</h1>
+                <p>If you need to do some project management in a hurry (which is totally normal! &#12484;), Quick Gantt is for you. You can create quick, professional looking Gantt charts for your short projects like a Agile sprint.</p>
+                <p>Let's start with a project name</p>
+                <div class="alert alert-danger" id="alertWelcome">
+                  <strong>Oh snap!</strong>
+                </div>
+                <input class="form-control input-lg" type="text" id="projectName" placeholder="Enter your project name">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-lg btn-success btn-primary" id="startButton">Start</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Change Project Name Modal -->
+    <div class="modal fade" id="changeProjectNameWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="f">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Change Project Name</h4>
+          </div>
+          <div class="modal-body">
+            <form role="form">
+              <div class="alert alert-danger" id="alertChangeProjectName">
+                <strong>Oh snap!</strong>
+              </div>
+              <input class="form-control input-lg" type="text" id="newProjectName" placeholder="Enter your new project name">
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success btn-primary" id="saveButton">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- New Task Modal -->
+    <div class="modal fade" id="newTaskWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="f">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Add New Task</h4>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger" id="alertTask">
+              <strong>Oh snap!</strong>
+            </div>
+            <form role="form">
+              <div class="form-group">
+                <label for="taskName">Task Name</label> 
+                <input type="text" class="form-control" id="taskName" name="taskName" placeholder="Enter a short task desc">
+              </div>
+
+              <table>
+                <tr>
+                  <td>
+                    <div class="form-group">
+                      <label for="taskStartDate">Start Date</label> 
+                      <input type="text" class="form-control" id="taskStartDate" name="taskStartDate">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group">
+                      <label for="taskEndDate">End Date</label> 
+                      <input type="text" class="form-control" id="taskEndDate" name="taskEndDate">
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="form-group">
+                      <label for="taskColor">Color</label> 
+                      <input type="text" class="form-control" id="taskColor" name="taskColor" value="#00c1ff">
+                      <!--                  <input type="color" class="form-control" placeholder="Text input"> -->
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group">
+                      <label for="perComplete">% Complete</label> <br> 
+                      <input type="text" class="form-control" id="perComplete" name="perComplete" data-slider-handle="square" data-slider-min="0" data-slider-max="100" data-slider-value="0" data-slider-step="1"> 
+                      <span id="ex6CurrentSliderValLabel"><span id="ex6SliderVal">0%</span></span>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+              <div class="form-group">
+                <label for="taskResource">Resource</label> 
+                <input type="text" class="form-control" id="taskResource" name="taskResource" placeholder="Enter the name of a resource">
+              </div>
+              <div class="form-group">
+                <label for="taskParent">Parent group</label> 
+                <input type="hidden" id="taskParent" name="taskParent" style="width: 100%" />
+              </div>
+              <div class="form-group">
+                <label for="taskDepend">Depended on</label> 
+                <input type="hidden" id="taskDepend" name="taskDepend" style="width: 100%" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="taskSaveButton">Save task</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- New Group Modal -->
+    <div class="modal fade" id="newGroupWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="f">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Add New Task Group</h4>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger" id="alertGroup">
+              <strong>Oh snap!</strong>
+            </div>
+            <form role="form">
+              <div class="form-group">
+                <label for="groupName">Group Name</label>
+                <input type="text" class="form-control" id="groupName" name="groupName" placeholder="Enter a short task group desc">
+              </div>
+              <div class="form-group">
+                <label for="groupResource">Resource</label> <input type="text" class="form-control" id="groupResource" name="groupResource" placeholder="Enter the name of a resource">
+              </div>
+              <div class="form-group">
+                <label for="groupParent">Parent group</label>
+                <input type="hidden" id="groupParent" name="groupParent" style="width: 100%" />
+              </div>
+              <div class="form-group">
+                <label for="groupParent">Show group branch as </label> <input type="hidden" id="groupDepend" name="groupDepend" />
+              </div>
+              <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default"> <input type="radio" name="groupOpenClose" id="groupOpenClose" value="1" checked> <span class="glyphicon glyphicon-minus"></span>Open
+                </label> <label class="btn btn-default"> <input type="radio" name="groupOpenClose" id="groupOpenClose" value="0"> <span class="glyphicon glyphicon-plus"></span>Closed
+                </label>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="groupSaveButton">Save group</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- New Milestone Modal -->
+    <div class="modal fade" id="newMilestoneWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="f">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Add New Milestone</h4>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger" id="alertMilestone">
+              <strong>Oh snap!</strong>
+            </div>          
+            <form role="form">
+              <div class="form-group">
+                <label for="milestoneName">Milestone Name</label> 
+                <input type="text" class="form-control" id="milestoneName" name="milestoneName" placeholder="Enter a short milestone desc">
+              </div>
+              <table>
+                <tr>
+                  <td>
+                    <div class="form-group">
+                      <label for="milestoneDate">Milestone Date</label>
+                      <input type="text" class="form-control" id="milestoneDate" name="milestoneDate">
+                    </div>
+                  </td>
+                  <td></td>
+                </tr>
+              </table>
+              <div class="form-group">
+                <label for="milestoneResource">Resource</label>
+                <input type="text" class="form-control" id="milestoneResource" name="milestoneResource" placeholder="Enter the name of a resource">
+              </div>
+              <div class="form-group">
+                <label for="milestoneParent">Parent group</label>
+                <input type="hidden" id="milestoneParent" name="milestoneParent" style="width: 100%" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="msSaveButton">Save milestone</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span id="ganttHeading" data-toggle="tooltip" title="Click to edit..." data-placement="left"><h1></h1></span>
+    <div style="position: relative" class="gantt" id="GanttChartDIV"></div>
+  </div>
+  <!-- /.container -->
+  <!-- Bootstrap core JavaScript
+     ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/select2.js"></script>
+  <script src="js/bootstrap-datepicker.js"></script>
+  <script src="js/bootstrap-colorpicker.js"></script>
+  <script src="js/typeahead.js"></script>
+  <script src="js/bootstrap-slider.js"></script>
+  <script src="js/jsgantt.js"></script>
+  <script src="js/p3.js"></script>
+</body>
+</html>
