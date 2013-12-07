@@ -150,11 +150,16 @@ $(function() {
     // Show the modal
     $('#newMilestoneWindow').modal('show');
   });
-  $('#printThis').on('click', function(e) {
+  $('#printThis').on('click', function(e) { // Prints just the chart
     e.preventDefault();
     printDiv('GanttChartDIV');
   });
-
+  $('#aboutThis').on('click', function(e) { // Displays About window
+    e.preventDefault();
+    // Show the modal
+    $('#aboutWindow').modal('show');	
+  });
+  
   $('#startButton').on(
       'click',
       function(e) {
