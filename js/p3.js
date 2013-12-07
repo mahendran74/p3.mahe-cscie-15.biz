@@ -77,16 +77,18 @@ function editTaskItem(vTaskID) {
  */
 function editGroupItem(vTaskID) {
   var tempTaskItem = JSGantt.LookUpTask(vGanttChart, vTaskID);
-  $('#alertGroup').hide();
-  $('#groupName').val(tempTaskItem.getName);
-  $('#groupResource').val(tempTaskItem.getResource);
-  $('#groupParent').val(tempTaskItem.getParent);
-  $('#groupOpenClose').val(tempTaskItem.getOpen);
-  $('#groupID').val(tempTaskItem.getID);
-  $('#addGroupAction').hide();
-  $('#editGroupAction').show();
-  $('#groupModalLabel').text("Edit Group");
-  $('#newGroupWindow').modal('show');
+  if (tempTaskItem) {
+    $('#alertGroup').hide();
+    $('#groupName').val(tempTaskItem.getName);
+    $('#groupResource').val(tempTaskItem.getResource);
+    $('#groupParent').val(tempTaskItem.getParent);
+    $('#groupOpenClose').val(tempTaskItem.getOpen);
+    $('#groupID').val(tempTaskItem.getID);
+    $('#addGroupAction').hide();
+    $('#editGroupAction').show();
+    $('#groupModalLabel').text("Edit Group");
+    $('#newGroupWindow').modal('show');
+  }
 }
 /**
  * Process the Edit milestone button click
@@ -111,6 +113,7 @@ function editMilestone(vTaskID) {
 
 $(function() {
   $('#ganttHeading').tooltip();
+  $('.taskDisplay').tooltip();
   $('#newTask').on('click', function(e) {
     e.preventDefault();
     // Hide unwanted elements

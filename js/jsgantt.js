@@ -695,18 +695,18 @@ JSGantt.GanttChart = function(pGanttVar, pDiv, pFormat) {
                 + vGanttVar
                 + '.DrawDependencies();">+</span><span style="color:#000000">&nbsp</SPAN>';
           vLeftTable += '<span onclick="editGroupItem(' + vID
-              + ');" style="cursor:pointer"> ' + vTaskList[i].getName()
+              + ');" style="cursor:pointer" class="taskDisplay" data-toggle="tooltip" title="Click to edit..." data-placement="left"> ' + vTaskList[i].getName()
               + '</span></NOBR></TD>';
         } else {
 
           vLeftTable += '<span style="color: #000000; font-weight:bold; FONT-SIZE: 12px;">&nbsp&nbsp&nbsp</span>';
           if (vTaskList[i].getMile()) {
             vLeftTable += '<span onclick="editMilestone(' + vID
-                + ');" style="cursor:pointer"> ' + vTaskList[i].getName()
+                + ');" style="cursor:pointer" class="taskDisplay" data-toggle="tooltip" title="Click to edit..." data-placement="left"> ' + vTaskList[i].getName()
                 + '</span></NOBR></TD>';
           } else {
             vLeftTable += '<span onclick="editTaskItem(' + vID
-                + ');" style="cursor:pointer"> ' + vTaskList[i].getName()
+                + ');" style="cursor:pointer" class="taskDisplay" data-toggle="tooltip" title="Click to edit..." data-placement="left"> ' + vTaskList[i].getName()
                 + '</span></NOBR></TD>';
           }
         }
