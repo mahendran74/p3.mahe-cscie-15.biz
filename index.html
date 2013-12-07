@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content=""/>
-<meta name="author" content=""/>
-<title>Quick Gantt</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>P3 - Quick Gantt</title>
 <!-- Bootstrap core CSS -->
-<link href="css/bootstrap.css" rel="stylesheet"/>
-<link href="css/select2.css" rel="stylesheet"/>
-<link href="css/datepicker.css" rel="stylesheet"/>
-<link href="css/bootstrap-colorpicker.css" rel="stylesheet"/>
-<link href="css/typeahead.js-bootstrap.css" rel="stylesheet"/>
-<link href="css/slider.css" rel="stylesheet"/>
-<link href="css/jsgantt.css" rel="stylesheet"/>
+<link href="css/bootstrap.css" rel="stylesheet" />
+<link href="css/select2.css" rel="stylesheet" />
+<link href="css/datepicker.css" rel="stylesheet" />
+<link href="css/bootstrap-colorpicker.css" rel="stylesheet" />
+<link href="css/typeahead.js-bootstrap.css" rel="stylesheet" />
+<link href="css/slider.css" rel="stylesheet" />
+<link href="css/jsgantt.css" rel="stylesheet" />
 <!-- Custom styles for this template -->
-<link href="css/p3.css" rel="stylesheet"/>
+<link href="css/p3.css" rel="stylesheet" />
 
 <!-- Just for debugging purposes. Don't actually copy this line! -->
 <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -33,7 +33,7 @@
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
           <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Quick Gantt</a>
+        <a class="navbar-brand" href="#">P3 - Quick Gantt</a>
       </div>
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
@@ -56,7 +56,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="welcomeModalLabel"> </h4>
+            <h4 class="modal-title" id="welcomeModalLabel"></h4>
           </div>
           <div class="modal-body">
             <form role="form">
@@ -117,7 +117,6 @@
                 <label for="taskName">Task Name</label> 
                 <input type="text" class="form-control" id="taskName" name="taskName" placeholder="Enter a short task desc">
               </div>
-
               <table>
                 <tr>
                   <td>
@@ -144,7 +143,7 @@
                   <td>
                     <div class="form-group">
                       <label for="perComplete">% Complete</label> <br> 
-                      <input type="text" class="form-control" id="perComplete" name="perComplete" data-slider-handle="square" data-slider-min="0" data-slider-max="100" data-slider-value="0" data-slider-step="1"> 
+                      <input type="text" class="form-control" id="perComplete" name="perComplete" data-slider-handle="square" data-slider-min="0" data-slider-max="100" data-slider-value="0" data-slider-step="1">
                       <span id="ex6CurrentSliderValLabel"><span id="ex6SliderVal">0%</span></span>
                     </div>
                   </td>
@@ -165,16 +164,16 @@
             </form>
           </div>
           <div class="modal-footer">
-		   <div id="addTaskAction">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="taskSaveButton">Save task</button>
-			</div>
-		   <div id="editTaskAction">
-		    <input type="hidden" id="taskID" name="taskID"/>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-danger" id="taskDelButton">Delete task</button>
-            <button type="button" class="btn btn-primary" id="taskEditButton">Save task</button>
-			</div>
+            <div id="addTaskAction">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="taskSaveButton">Save task</button>
+            </div>
+            <div id="editTaskAction">
+              <input type="hidden" id="taskID" name="taskID" />
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-danger" id="taskDelButton">Delete task</button>
+              <button type="button" class="btn btn-primary" id="taskEditButton">Save task</button>
+            </div>
           </div>
         </div>
       </div>
@@ -193,42 +192,43 @@
             </div>
             <form role="form">
               <div class="form-group">
-                <label for="groupName">Group Name</label>
+                <label for="groupName">Group Name</label> 
                 <input type="text" class="form-control" id="groupName" name="groupName" placeholder="Enter a short task group desc">
               </div>
               <div class="form-group">
-                <label for="groupResource">Resource</label> <input type="text" class="form-control" id="groupResource" name="groupResource" placeholder="Enter the name of a resource">
+                <label for="groupResource">Resource</label> 
+                <input type="text" class="form-control" id="groupResource" name="groupResource" placeholder="Enter the name of a resource">
               </div>
               <div class="form-group">
-                <label for="groupParent">Parent group</label>
+                <label for="groupParent">Parent group</label> 
                 <input type="hidden" id="groupParent" name="groupParent" style="width: 100%" />
               </div>
               <div class="form-group">
-                <label for="groupOpenClose">Show group branch as </label> 
-              <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-default"> 
-					<input type="radio" name="groupOpenClose" id="groupOpen" value="1" checked> 
-					<span class="glyphicon glyphicon-minus"></span>Open
-                </label> 
-				<label class="btn btn-default"> 
-					<input type="radio" name="groupOpenClose" id="groupClose" value="0"> 
-					<span class="glyphicon glyphicon-plus"></span>Closed
-                </label>
+                <label for="groupOpenClose">Show group branch as </label>
+                <div class="btn-group" data-toggle="buttons">
+                  <label class="btn btn-default"> 
+                    <input type="radio" name="groupOpenClose" id="groupOpen" value="1" checked> 
+                    <span class="glyphicon glyphicon-minus"></span>Open
+                  </label> 
+                  <label class="btn btn-default"> 
+                    <input type="radio" name="groupOpenClose" id="groupClose" value="0"> 
+                    <span class="glyphicon glyphicon-plus"></span>Closed
+                  </label>
+                </div>
               </div>
-			                </div>
             </form>
           </div>
-		  <div class="modal-footer">
-		   <div id="addGroupAction">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="groupSaveButton">Save group</button>
-			</div>
-		   <div id="editGroupAction">
-		    <input type="hidden" id="groupID" name="groupID"/>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-danger" id="groupDelButton">Delete group</button>
-            <button type="button" class="btn btn-primary" id="groupEditButton">Save group</button>
-			</div>
+          <div class="modal-footer">
+            <div id="addGroupAction">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="groupSaveButton">Save group</button>
+            </div>
+            <div id="editGroupAction">
+              <input type="hidden" id="groupID" name="groupID" />
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-danger" id="groupDelButton">Delete group</button>
+              <button type="button" class="btn btn-primary" id="groupEditButton">Save group</button>
+            </div>
           </div>
         </div>
       </div>
@@ -244,50 +244,46 @@
           <div class="modal-body">
             <div class="alert alert-danger" id="alertMilestone">
               <strong>Oh snap!</strong>
-            </div>          
+            </div>
             <form role="form">
               <div class="form-group">
-                <label for="milestoneName">Milestone Name</label> 
+                <label for="milestoneName">Milestone Name</label>
                 <input type="text" class="form-control" id="milestoneName" name="milestoneName" placeholder="Enter a short milestone desc">
               </div>
-              <table>
-                <tr>
-                  <td>
-                    <div class="form-group">
-                      <label for="milestoneDate">Milestone Date</label>
-                      <input type="text" class="form-control" id="milestoneDate" name="milestoneDate">
-                    </div>
-                  </td>
-                  <td></td>
-                </tr>
-              </table>
               <div class="form-group">
-                <label for="milestoneResource">Resource</label>
+                <label for="milestoneDate">Milestone Date</label>
+                <input type="text" class="form-control" id="milestoneDate" name="milestoneDate">
+              </div>
+              <div class="form-group">
+                <label for="milestoneResource">Resource</label> 
                 <input type="text" class="form-control" id="milestoneResource" name="milestoneResource" placeholder="Enter the name of a resource">
               </div>
               <div class="form-group">
-                <label for="milestoneParent">Parent group</label>
+                <label for="milestoneParent">Parent group</label> 
                 <input type="hidden" id="milestoneParent" name="milestoneParent" style="width: 100%" />
               </div>
             </form>
           </div>
-		  <div class="modal-footer">
-		   <div id="addMsAction">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="msSaveButton">Save milestone</button>
-			</div>
-		   <div id="editMsAction">
-		    <input type="hidden" id="msID" name="msID"/>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-danger" id="msDelButton">Delete milestone</button>
-            <button type="button" class="btn btn-primary" id="msEditButton">Save milestone</button>
-			</div>
-          </div>		  
+          <div class="modal-footer">
+            <div id="addMsAction">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="msSaveButton">Save milestone</button>
+            </div>
+            <div id="editMsAction">
+              <input type="hidden" id="msID" name="msID" />
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-danger" id="msDelButton">Delete milestone</button>
+              <button type="button" class="btn btn-primary" id="msEditButton">Save milestone</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <h2><span id="ganttHeading" data-toggle="tooltip" title="Click to edit..." data-placement="left"></span></h2>
+    <h2>
+      <span id="ganttHeading" data-toggle="tooltip" title="Click to edit..." data-placement="left"></span>
+    </h2>
     <div style="position: relative" class="gantt" id="GanttChartDIV"></div>
+
   </div>
   <!-- /.container -->
   <!-- Bootstrap core JavaScript
