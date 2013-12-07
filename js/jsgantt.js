@@ -115,23 +115,6 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
             else             vDuration = tmpPer + ' Days';
          }
 
-         //else if(vFormat == 'week') {
-         //   tmpPer =  ((this.getEnd() - this.getStart()) /  (24 * 60 * 60 * 1000) + 1)/7;
-         //   if(tmpPer == 1)  vDuration = '1 Week';
-         //   else             vDuration = tmpPer + ' Weeks'; 
-         //}
-
-         //else if(vFormat == 'month') {
-         //   tmpPer =  ((this.getEnd() - this.getStart()) /  (24 * 60 * 60 * 1000) + 1)/30;
-         //   if(tmpPer == 1) vDuration = '1 Month';
-         //   else            vDuration = tmpPer + ' Months'; 
-         //}
-
-         //else if(vFormat == 'quater') {
-         //   tmpPer =  ((this.getEnd() - this.getStart()) /  (24 * 60 * 60 * 1000) + 1)/120;
-         //   if(tmpPer == 1) vDuration = '1 Qtr';
-         //   else            vDuration = tmpPer + ' Qtrs'; 
-         //}
          return( vDuration )
       };
 
@@ -159,7 +142,16 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor, pLink, pMile, pRes
       this.setVisible  = function(pVisible) {vVisible = pVisible; };
 
   }
-
+JSGantt.LookUpTask = function(pGanttVar, vTaskID) {
+		var vGanttVar = pGanttVar;
+		var vList = vGanttVar.getList();
+         for(i = 0; i < vList.length; i++)
+         {
+			if (vList[i].getID() == vTaskID) {
+				return vList[i];
+			}
+		 }
+}
 	
   // function that loads the main gantt chart properties and functions
   // pDiv: (required) this is a DIV object created in HTML
@@ -245,6 +237,26 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat)
          vTaskList.push(value);
       }
 
+	  this.DeleteTaskItem = function(value)
+      {
+         for(i = 0; i < vTaskList.length; i++)
+         {
+			if (vTaskList[i].getID() == value.getID()) {
+				vTaskList.splice(i,1);
+			}
+		 }
+      }
+	  
+	  this.EditTaskItem = function(value)
+      {
+         for(i = 0; i < vTaskList.length; i++)
+         {
+			if (vTaskList[i].getID() == value.getID()) {
+				vTaskList.splice(i,1,value);
+			}
+		 }
+      }
+	  
       this.getList   = function() { return vTaskList };
 
       this.clearDependencies = function()
@@ -529,14 +541,21 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat)
                      vLeftTable += '<SPAN id="group_' + vID + '" style="color:#000000; cursor:pointer; font-weight:bold; FONT-SIZE: 12px;" onclick="JSGantt.folder(' + vID + ','+vGanttVar+');'+vGanttVar+'.DrawDependencies();">&ndash;</span><span style="color:#000000">&nbsp</SPAN>' ;
                   else
                      vLeftTable += '<SPAN id="group_' + vID + '" style="color:#000000; cursor:pointer; font-weight:bold; FONT-SIZE: 12px;" onclick="JSGantt.folder(' + vID + ','+vGanttVar+');'+vGanttVar+'.DrawDependencies();">+</span><span style="color:#000000">&nbsp</SPAN>' ;
-				 
+				 vLeftTable += 
+                  '<span onclick="editGroupItem(' + vID + ');" style="cursor:pointer"> ' + vTaskList[i].getName() + '</span></NOBR></TD>' ;
                } else {
 
                   vLeftTable += '<span style="color: #000000; font-weight:bold; FONT-SIZE: 12px;">&nbsp&nbsp&nbsp</span>';
+				  if( vTaskList[i].getMile()) {
+				  vLeftTable += 
+                  '<span onclick="editMilestone(' + vID + ');" style="cursor:pointer"> ' + vTaskList[i].getName() + '</span></NOBR></TD>' ;
+				  }else {
+				  vLeftTable += 
+                  '<span onclick="editTaskItem(' + vID + ');" style="cursor:pointer"> ' + vTaskList[i].getName() + '</span></NOBR></TD>' ;
+				  }
                }
 
-               vLeftTable += 
-                  '<span onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '",300,200); style="cursor:pointer"> ' + vTaskList[i].getName() + '</span></NOBR></TD>' ;
+               
 
                if(vShowRes ==1) vLeftTable += '  <TD class=gname style="WIDTH: 60px; HEIGHT: 20px; TEXT-ALIGN: center; BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #efefef 1px solid;" align=center><NOBR>' + vTaskList[i].getResource() + '</NOBR></TD>' ;
                if(vShowDur ==1) vLeftTable += '  <TD class=gname style="WIDTH: 60px; HEIGHT: 20px; TEXT-ALIGN: center; BORDER-TOP: #efefef 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #efefef 1px solid;" align=center><NOBR>' + vTaskList[i].getDuration(vFormat) + '</NOBR></TD>' ;
@@ -870,7 +889,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat)
 
   	            vRightTable +=
                   '<div id=bardiv_' + vID + ' style="position:absolute; top:0px; left:' + Math.ceil((vTaskLeft * (vDayWidth) + 1)) + 'px; height: 18px; width:160px; overflow:hidden;">' +
-                  '  <div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" style="height: 16px; width:12px; overflow:hidden; cursor: pointer;" onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '",300,200);>';
+                  '  <div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" style="height: 16px; width:12px; overflow:hidden; cursor: pointer;" onclick="editMilestone(' + vID + ');">';
 
                if(vTaskList[i].getCompVal() < 100)
  		            vRightTable += '&loz;</div>' ;
@@ -929,7 +948,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat)
                        '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" class=gtask style="background-color:#000000; height: 7px; width:' + Math.ceil((vTaskRight) * (vDayWidth) -1) + 'px;  cursor: pointer;opacity:0.9;">' +
                          '<div style="Z-INDEX: -4; float:left; background-color:#666666; height:3px; overflow: hidden; margin-top:1px; ' +
                                'margin-left:1px; margin-right:1px; filter: alpha(opacity=80); opacity:0.8; width:' + vTaskList[i].getCompStr() + '; ' + 
-                               'cursor: pointer;" onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '",300,200);>' +
+                               'cursor: pointer;" onclick=editGroupItem(' + vID + ');>' +
                            '</div>' +
                         '</div>' +
                         '<div style="Z-INDEX: -4; float:left; background-color:#000000; height:4px; overflow: hidden; width:1px;"></div>' +
@@ -965,7 +984,7 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat)
 	            vRightTable +=
                      '<div id=bardiv_' + vID + ' style="position:absolute; top:4px; left:' + Math.ceil(vTaskLeft * (vDayWidth) + 1) + 'px; height:18px; width:' + Math.ceil((vTaskRight) * (vDayWidth) - 1) + 'px">' +
                         '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ': ' + vDateRowStr + '" class=gtask style="background-color:' + vTaskList[i].getColor() +'; height: 13px; width:' + Math.ceil((vTaskRight) * (vDayWidth) - 1) + 'px; cursor: pointer;opacity:0.9;" ' +
-                           'onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '",300,200); >' +
+                           'onclick="editTaskItem(' + vID + ');" >' +
                            '<div class=gcomplete style="Z-INDEX: -4; float:left; background-color:black; height:5px; overflow: auto; margin-top:4px; filter: alpha(opacity=40); opacity:0.4; width:' + vTaskList[i].getCompStr() + '; overflow:hidden">' +
                            '</div>' +
                         '</div>';
@@ -1153,12 +1172,6 @@ JSGantt.getMinDate = function getMinDate(pList, pFormat)
          return(vDate);
 
       }
-
-
-
-
-
-
 
       // Used to determine the minimum date of all tasks and set lower bound based on format
 

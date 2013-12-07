@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="">
-<meta name="author" content="">
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content=""/>
+<meta name="author" content=""/>
 <title>Quick Gantt</title>
 <!-- Bootstrap core CSS -->
-<link href="css/bootstrap.css" rel="stylesheet">
-<link href="css/select2.css" rel="stylesheet">
-<link href="css/datepicker.css" rel="stylesheet">
-<link href="css/bootstrap-colorpicker.css" rel="stylesheet">
-<link href="css/typeahead.js-bootstrap.css" rel="stylesheet">
-<link href="css/slider.css" rel="stylesheet">
-<link href="css/jsgantt.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet"/>
+<link href="css/select2.css" rel="stylesheet"/>
+<link href="css/datepicker.css" rel="stylesheet"/>
+<link href="css/bootstrap-colorpicker.css" rel="stylesheet"/>
+<link href="css/typeahead.js-bootstrap.css" rel="stylesheet"/>
+<link href="css/slider.css" rel="stylesheet"/>
+<link href="css/jsgantt.css" rel="stylesheet"/>
 <!-- Custom styles for this template -->
-<link href="css/p3.css" rel="stylesheet">
+<link href="css/p3.css" rel="stylesheet"/>
 
 <!-- Just for debugging purposes. Don't actually copy this line! -->
 <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -52,11 +52,11 @@
   </div>
   <div class="container">
     <!-- Welcome Modal -->
-    <div class="modal fade modal-wide" id="welcomeWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="f" data-backdrop="static" data-keyboard="false">
+    <div class="modal fade modal-wide" id="welcomeWindow" tabindex="-1" role="dialog" aria-labelledby="welcomeModalLabel" aria-hidden="f" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">Hello and welcome to</h4>
+            <h4 class="modal-title" id="welcomeModalLabel"> </h4>
           </div>
           <div class="modal-body">
             <form role="form">
@@ -67,7 +67,7 @@
                 <div class="alert alert-danger" id="alertWelcome">
                   <strong>Oh snap!</strong>
                 </div>
-                <input class="form-control input-lg" type="text" id="projectName" placeholder="Enter your project name">
+                <input class="form-control input-lg" type="text" id="projectName" maxlength="50" placeholder="Enter your project name">
               </div>
             </form>
           </div>
@@ -78,19 +78,19 @@
       </div>
     </div>
     <!-- Change Project Name Modal -->
-    <div class="modal fade" id="changeProjectNameWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="f">
+    <div class="modal fade" id="changeProjectNameWindow" tabindex="-1" role="dialog" aria-labelledby="changeModalLabel" aria-hidden="f">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">Change Project Name</h4>
+            <h4 class="modal-title" id="changeModalLabel">Change Project Name</h4>
           </div>
           <div class="modal-body">
             <form role="form">
               <div class="alert alert-danger" id="alertChangeProjectName">
                 <strong>Oh snap!</strong>
               </div>
-              <input class="form-control input-lg" type="text" id="newProjectName" placeholder="Enter your new project name">
+              <input class="form-control input-lg" type="text" id="newProjectName" maxlength="50" placeholder="Enter your new project name">
             </form>
           </div>
           <div class="modal-footer">
@@ -101,12 +101,12 @@
       </div>
     </div>
     <!-- New Task Modal -->
-    <div class="modal fade" id="newTaskWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="f">
+    <div class="modal fade" id="newTaskWindow" tabindex="-1" role="dialog" aria-labelledby="taskModalLabel" aria-hidden="f">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">Add New Task</h4>
+            <h4 class="modal-title" id="taskModalLabel">Add New Task</h4>
           </div>
           <div class="modal-body">
             <div class="alert alert-danger" id="alertTask">
@@ -155,7 +155,7 @@
                 <input type="text" class="form-control" id="taskResource" name="taskResource" placeholder="Enter the name of a resource">
               </div>
               <div class="form-group">
-                <label for="taskParent">Parent group</label> 
+                <label>Parent group</label> 
                 <input type="hidden" id="taskParent" name="taskParent" style="width: 100%" />
               </div>
               <div class="form-group">
@@ -165,19 +165,27 @@
             </form>
           </div>
           <div class="modal-footer">
+		   <div id="addTaskAction">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" id="taskSaveButton">Save task</button>
+			</div>
+		   <div id="editTaskAction">
+		    <input type="hidden" id="taskID" name="taskID"/>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-danger" id="taskDelButton">Delete task</button>
+            <button type="button" class="btn btn-primary" id="taskEditButton">Save task</button>
+			</div>
           </div>
         </div>
       </div>
     </div>
     <!-- New Group Modal -->
-    <div class="modal fade" id="newGroupWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="f">
+    <div class="modal fade" id="newGroupWindow" tabindex="-1" role="dialog" aria-labelledby="groupModalLabel" aria-hidden="f">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">Add New Task Group</h4>
+            <h4 class="modal-title" id="groupModalLabel">Add New Task Group</h4>
           </div>
           <div class="modal-body">
             <div class="alert alert-danger" id="alertGroup">
@@ -196,29 +204,42 @@
                 <input type="hidden" id="groupParent" name="groupParent" style="width: 100%" />
               </div>
               <div class="form-group">
-                <label for="groupParent">Show group branch as </label> <input type="hidden" id="groupDepend" name="groupDepend" />
-              </div>
+                <label for="groupOpenClose">Show group branch as </label> 
               <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-default"> <input type="radio" name="groupOpenClose" id="groupOpenClose" value="1" checked> <span class="glyphicon glyphicon-minus"></span>Open
-                </label> <label class="btn btn-default"> <input type="radio" name="groupOpenClose" id="groupOpenClose" value="0"> <span class="glyphicon glyphicon-plus"></span>Closed
+                <label class="btn btn-default"> 
+					<input type="radio" name="groupOpenClose" id="groupOpen" value="1" checked> 
+					<span class="glyphicon glyphicon-minus"></span>Open
+                </label> 
+				<label class="btn btn-default"> 
+					<input type="radio" name="groupOpenClose" id="groupClose" value="0"> 
+					<span class="glyphicon glyphicon-plus"></span>Closed
                 </label>
               </div>
+			                </div>
             </form>
           </div>
-          <div class="modal-footer">
+		  <div class="modal-footer">
+		   <div id="addGroupAction">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" id="groupSaveButton">Save group</button>
+			</div>
+		   <div id="editGroupAction">
+		    <input type="hidden" id="groupID" name="groupID"/>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-danger" id="groupDelButton">Delete group</button>
+            <button type="button" class="btn btn-primary" id="groupEditButton">Save group</button>
+			</div>
           </div>
         </div>
       </div>
     </div>
     <!-- New Milestone Modal -->
-    <div class="modal fade" id="newMilestoneWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="f">
+    <div class="modal fade" id="newMilestoneWindow" tabindex="-1" role="dialog" aria-labelledby="milestoneModalLabel" aria-hidden="f">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">Add New Milestone</h4>
+            <h4 class="modal-title" id="milestoneModalLabel">Add New Milestone</h4>
           </div>
           <div class="modal-body">
             <div class="alert alert-danger" id="alertMilestone">
@@ -250,14 +271,22 @@
               </div>
             </form>
           </div>
-          <div class="modal-footer">
+		  <div class="modal-footer">
+		   <div id="addMsAction">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" id="msSaveButton">Save milestone</button>
-          </div>
+			</div>
+		   <div id="editMsAction">
+		    <input type="hidden" id="msID" name="msID"/>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-danger" id="msDelButton">Delete milestone</button>
+            <button type="button" class="btn btn-primary" id="msEditButton">Save milestone</button>
+			</div>
+          </div>		  
         </div>
       </div>
     </div>
-    <span id="ganttHeading" data-toggle="tooltip" title="Click to edit..." data-placement="left"><h1></h1></span>
+    <h2><span id="ganttHeading" data-toggle="tooltip" title="Click to edit..." data-placement="left"></span></h2>
     <div style="position: relative" class="gantt" id="GanttChartDIV"></div>
   </div>
   <!-- /.container -->

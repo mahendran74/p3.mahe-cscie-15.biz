@@ -36,24 +36,77 @@ function printDiv(divID) {
 function format(item) {
   return item.text;
 };
+
+function editTaskItem(vTaskID) {
+	var tempTaskItem = JSGantt.LookUpTask(vGanttChart, vTaskID);
+    $('#alertTask').hide();
+	$('#taskName').val(tempTaskItem.getName);
+	$('#taskStartDate').val((tempTaskItem.getStart().getMonth() + 1) + '/' + tempTaskItem.getStart().getDate() + '/' +  tempTaskItem.getStart().getFullYear());
+	$('#taskEndDate').val((tempTaskItem.getEnd().getMonth() + 1) + '/' + tempTaskItem.getEnd().getDate() + '/' +  tempTaskItem.getEnd().getFullYear());
+	$('#taskColor').val(tempTaskItem.getColor);
+	$('#perComplete').val(tempTaskItem.getCompVal);
+	$('#taskResource').val(tempTaskItem.getResource);	
+	$('#taskParent').val(tempTaskItem.getParent);
+	$('#taskDepend').val(tempTaskItem.getDepend);
+	$('#taskID').val(tempTaskItem.getID);
+	$('#addTaskAction').hide();
+	$('#editTaskAction').show();
+	$('#taskModalLabel').text("Edit Task");
+    $('#newTaskWindow').modal('show');
+}
+function editGroupItem(vTaskID) {
+	var tempTaskItem = JSGantt.LookUpTask(vGanttChart, vTaskID);
+    $('#alertGroup').hide();
+	$('#groupName').val(tempTaskItem.getName);
+	$('#groupResource').val(tempTaskItem.getResource);	
+	$('#groupParent').val(tempTaskItem.getParent);
+	$('#groupOpenClose').val(tempTaskItem.getOpen);
+	$('#groupID').val(tempTaskItem.getID);	
+	$('#addGroupAction').hide();
+	$('#editGroupAction').show();
+	$('#groupModalLabel').text("Edit Group");
+    $('#newGroupWindow').modal('show');
+}
+function editMilestone(vTaskID) {
+	var tempTaskItem = JSGantt.LookUpTask(vGanttChart, vTaskID);
+    $('#alertMilestone').hide();
+	$('#milestoneName').val(tempTaskItem.getName);
+	$('#milestoneDate').val((tempTaskItem.getStart().getMonth() + 1) + '/' + tempTaskItem.getStart().getDate() + '/' +  tempTaskItem.getStart().getFullYear());
+	$('#milestoneResource').val(tempTaskItem.getResource);	
+	$('#milestoneParent').val(tempTaskItem.getParent);
+	$('#msID').val(tempTaskItem.getID);	
+	$('#addMsAction').hide();
+	$('#editMsAction').show();
+	$('#milestoneModalLabel').text("Edit Milestone");
+    $('#newMilestoneWindow').modal('show');
+}
     $(function() {
       $('#ganttHeading').tooltip();
       $('#newTask').on('click', function(e) {
         e.preventDefault();
         $('#alertTask').hide();
+		$('#editTaskAction').hide();
+		$('#addTaskAction').show();
+		$('#taskName').val('');
+		$('#taskStartDate').val('');
+	    $('#taskEndDate').val('');
+		$('#taskModalLabel').text("Add New Task");
         $('#newTaskWindow').modal('show');
       });
-	  $('#newTask').bind('show',function(){
-        $("#taskName").val('');
-     });
       $('#newGroup').on('click', function(e) {
         e.preventDefault();
         $('#alertGroup').hide();
+		$('#addGroupAction').show();
+	    $('#editGroupAction').hide();
+		$('#groupModalLabel').text("Add New Task Group");
         $('#newGroupWindow').modal('show');
       });
       $('#newMilestone').on('click', function(e) {
         e.preventDefault();
+	    $('#addMsAction').show();
+	    $('#editMsAction').hide();
         $('#alertMilestone').hide();
+	    $('#milestoneModalLabel').text("Add New Milestone");
         $('#newMilestoneWindow').modal('show');
       });
 	  $('#printThis').on('click', function(e) {
@@ -64,47 +117,47 @@ function format(item) {
       $('#startButton').on('click', function(e) {
         e.preventDefault();
         if ($('#projectName').val()) {
-          $('#ganttHeading h1').text(toTitleCase($('#projectName').val()));
+          $('#ganttHeading').text(toTitleCase($('#projectName').val()));
           $('#welcomeWindow').modal('hide');
-      if( vGanttChart ) {
-        vGanttChart.AddTaskItem(new JSGantt.TaskItem(
-            vTaskID,                              // Task ID
-            toTitleCase($('#projectName').val()), // Task Name
-            '',                                   // Task Start Date
-            '',                                   // Task End Date
-            '#ff0000',                            // Task Color
-            '',                                   // Link
-            0,                                    // Milestone Indicator
-            '',                                   // Task Resource
-            0,                                    // Percentage complete
-            1,                                    // Group Indicator
-            0,                                    // Parent group
-            1,                                    // Task Tree Open/Close Indicator
-            ''));                                 // Dependent Task
-        groupList.push({id:vTaskID, text:toTitleCase($('#projectName').val())});
-        vGanttChart.Draw();	
-        vGanttChart.DrawDependencies();
-      }
-      else
-      {
-        alert("not defined");
-      }					
+		  if( vGanttChart ) {
+			vGanttChart.AddTaskItem(new JSGantt.TaskItem(
+				vTaskID,                              // Task ID
+				toTitleCase($('#projectName').val()), // Task Name
+				'',                                   // Task Start Date
+				'',                                   // Task End Date
+				'#ff0000',                            // Task Color
+				'',                                   // Link
+				0,                                    // Milestone Indicator
+				'',                                   // Task Resource
+				0,                                    // Percentage complete
+				1,                                    // Group Indicator
+				0,                                    // Parent group
+				1,                                    // Task Tree Open/Close Indicator
+				''));                                 // Dependent Task
+			groupList.push({id:vTaskID, text:toTitleCase($('#projectName').val())});
+			vGanttChart.Draw();	
+			vGanttChart.DrawDependencies();
+		  }
+		  else
+		  {
+			alert("not defined");
+		  }					
         } else {
-            $('#alertWelcome').show().find('strong')
+			$('#alertWelcome').show().find('strong')
             .text('Please enter your project name');
-          $('#projectName').focus();        			
+			$('#projectName').focus();        			
         }
       });
       $('#ganttHeading').on('click', function(e) {
         e.preventDefault();
-        $('#newProjectName').value = $('#ganttHeading').text();
+		$('#newProjectName').val($('#ganttHeading').text());
         $('#alertChangeProjectName').hide();
         $('#changeProjectNameWindow').modal('show');
       });
       $('#saveButton').on('click', function(e) {
         e.preventDefault();
         if ($('#newProjectName').val()) {
-          $('#ganttHeading h1').text(toTitleCase($('#newProjectName').val()));
+          $('#ganttHeading').text(toTitleCase($('#newProjectName').val()));
           $('#changeProjectNameWindow').modal('hide');        			
         } else {
             $('#alertChangeProjectName').show().find('strong')
@@ -119,10 +172,6 @@ function format(item) {
             $('#alertGroup').show().find('strong')
             .text('Please enter a group name');
           $('#groupName').focus();
-/*          		} else if (!$('#taskResource').val()) {
-            $('#alertTask').show().find('strong')
-            .text('Please enter or choose a resource for this task.');
-          $('#taskResource').focus(); */
         } else if (!$('#groupParent').val()) {
             $('#alertGroup').show().find('strong')
             .text('Please choose a task group for this task.');
@@ -132,21 +181,21 @@ function format(item) {
           // Add the task
           vTaskID = vTaskID + 1;
           vGanttChart.AddTaskItem(new JSGantt.TaskItem(
-            vTaskID,                     // Task ID
-            $('#groupName').val(),       // Task Name
-            '',                          // Task Start Date
-            '',                          // Task End Date
-            '',                          // Task Color
-            '',                          // Link
-            0,                           // Milestone Indicator
-            $('#groupResource').val(),   // Task Resource
-            '',                          // Percentage complete
-            1,                           // Group Indicator
-            $('#taskParent').val(),      // Parent group
-            $('#groupOpenClose').val(),  // Task Tree Open/Close Indicator
-            ''));                        // Dependent Task
+            vTaskID,                           // Task ID
+            toTitleCase($('#groupName').val()), // Task Name
+            '',                                // Task Start Date
+            '',                                // Task End Date
+            '',                                // Task Color
+            '',                                // Link
+            0,                                 // Milestone Indicator
+            toTitleCase($('#groupResource').val()),         // Task Resource
+            '',                                // Percentage complete
+            1,                                 // Group Indicator
+            $('#taskParent').val(),            // Parent group
+            $('#groupOpenClose').val(),        // Task Tree Open/Close Indicator
+            ''));                              // Dependent Task
           // Redraw the chart
-          resList.push($('#groupResource').val());
+          resList.push(toTitleCase($('#groupResource').val()));
           groupList.push({id:vTaskID, text:$('#groupName').val()});
           $('#groupResource').typeahead('destroy');
           $('#groupResource').typeahead({
@@ -156,6 +205,75 @@ function format(item) {
           vGanttChart.DrawDependencies();
         }
       });
+  $('#groupEditButton').on('click', function(e) {
+        e.preventDefault();
+    // Validate the values
+    if (!$('#groupName').val()) {
+            $('#alertGroup').show().find('strong')
+            .text('Please enter a group name');
+          $('#groupName').focus();
+        } else if (!$('#groupParent').val()) {
+            $('#alertGroup').show().find('strong')
+            .text('Please choose a task group for this task.');
+          $('#groupParent').focus();
+        } else {
+          $('#newGroupWindow').modal('hide'); 
+          // Add the task
+          vTaskID = vTaskID + 1;
+          vGanttChart.EditTaskItem(new JSGantt.TaskItem(
+            $('#groupID').val(),                           // Task ID
+            toTitleCase($('#groupName').val()), // Task Name
+            '',                                // Task Start Date
+            '',                                // Task End Date
+            '',                                // Task Color
+            '',                                // Link
+            0,                                 // Milestone Indicator
+            toTitleCase($('#groupResource').val()),         // Task Resource
+            '',                                // Percentage complete
+            1,                                 // Group Indicator
+            $('#taskParent').val(),            // Parent group
+            $('#groupOpenClose').val(),        // Task Tree Open/Close Indicator
+            ''));                              // Dependent Task
+          // Redraw the chart
+          resList.push(toTitleCase($('#groupResource').val()));
+          $('#groupResource').typeahead('destroy');
+          $('#groupResource').typeahead({
+            local : resList
+          });
+          vGanttChart.Draw();
+          vGanttChart.DrawDependencies();
+        }
+      });
+  $('#groupDelButton').on('click', function(e) {
+        e.preventDefault();
+    // Validate the values
+    if (confirm('Do you want to delete this group ?')) { 
+          // Add the task
+          vGanttChart.DeleteTaskItem(new JSGantt.TaskItem(
+            $('#groupID').val(),                           // Task ID
+            toTitleCase($('#groupName').val()), // Task Name
+            '',                                // Task Start Date
+            '',                                // Task End Date
+            '',                                // Task Color
+            '',                                // Link
+            0,                                 // Milestone Indicator
+            toTitleCase($('#groupResource').val()),         // Task Resource
+            '',                                // Percentage complete
+            1,                                 // Group Indicator
+            $('#taskParent').val(),            // Parent group
+            $('#groupOpenClose').val(),        // Task Tree Open/Close Indicator
+            ''));                              // Dependent Task
+          // Redraw the chart
+          resList.push(toTitleCase($('#groupResource').val()));
+          groupList.push({id:vTaskID, text:$('#groupName').val()});
+          $('#groupResource').typeahead('destroy');
+          $('#groupResource').typeahead({
+            local : resList
+          });
+          vGanttChart.Draw();
+          vGanttChart.DrawDependencies();
+        }
+      });	  
   $('#msSaveButton').on('click', function(e) {
     e.preventDefault();
     // Validate the values
@@ -177,20 +295,20 @@ function format(item) {
       vTaskID = vTaskID + 1;
       vGanttChart.AddTaskItem(new JSGantt.TaskItem(
         vTaskID,                       // Milestone ID
-        $('#milestoneName').val(),     // Milestone Name
+        toTitleCase($('#milestoneName').val()),     // Milestone Name
         $('#milestoneDate').val(),     // Milestone Start Date
         $('#milestoneDate').val(),     // Milestone End Date
         '#ff00ff',                     // Milestone Color
         '',                            // Link
         1,                             // Milestone Indicator
-        $('#milestoneResource').val(), // Task Resource
+        toTitleCase($('#milestoneResource').val()), // Task Resource
         '',                            // Percentage complete
         0,                             // Group Indicator
         $('#milestoneParent').val(),   // Parent group
         0,                             // Task Tree Open/Close Indicator
         ''));                          // Dependent Task
       // Redraw the chart
-      resList.push($('#milestoneResource').val());
+      resList.push(toTitleCase($('#milestoneResource').val()));
       $('#milestoneResource').typeahead('destroy');
       $('#milestoneResource').typeahead({
         local : resList
@@ -199,6 +317,154 @@ function format(item) {
       vGanttChart.DrawDependencies();
     }
   });
+    $('#msEditButton').on('click', function(e) {
+    e.preventDefault();
+    // Validate the values
+    if (!$('#milestoneName').val()) {
+      $('#alertMilestone').show().find('strong').text('Please enter your project name');
+      $('#milestoneName').focus();
+    } else if (!$('#milestoneDate').val()) {
+      $('#alertMilestone').show().find('strong').text('Please enter a date for this milestone.');
+      $('#milestoneDate').focus();
+    } else if (!$('#milestoneResource').val()) {
+      $('#alertMilestone').show().find('strong').text('Please enter or choose a resource for this mileston.');
+      $('#milestoneResource').focus(); 
+    } else if (!$('#milestoneParent').val()) {
+      $('#alertMilestone').show().find('strong').text('Please choose a task group for this milestone.');
+      $('#milestoneParent').focus();
+    } else {
+      $('#newMilestoneWindow').modal('hide'); 
+      // Add the Milestone
+      vGanttChart.EditTaskItem(new JSGantt.TaskItem(
+        $('#msID').val(),             // Milestone ID
+        toTitleCase($('#milestoneName').val()),     // Milestone Name
+        $('#milestoneDate').val(),     // Milestone Start Date
+        $('#milestoneDate').val(),     // Milestone End Date
+        '#ff00ff',                     // Milestone Color
+        '',                            // Link
+        1,                             // Milestone Indicator
+        toTitleCase($('#milestoneResource').val()), // Task Resource
+        '',                            // Percentage complete
+        0,                             // Group Indicator
+        $('#milestoneParent').val(),   // Parent group
+        0,                             // Task Tree Open/Close Indicator
+        ''));                          // Dependent Task
+      // Redraw the chart
+      resList.push(toTitleCase($('#milestoneResource').val()));
+      $('#milestoneResource').typeahead('destroy');
+      $('#milestoneResource').typeahead({
+        local : resList
+      });
+      vGanttChart.Draw();
+      vGanttChart.DrawDependencies();
+    }
+  });
+      $('#msDelButton').on('click', function(e) {
+    e.preventDefault();
+    if (confirm('Do you want to delete this milestone ?')) { 
+      $('#newMilestoneWindow').modal('hide'); 
+      // Add the Milestone
+      vGanttChart.DeleteTaskItem(new JSGantt.TaskItem(
+        $('#msID').val(),             // Milestone ID
+        toTitleCase($('#milestoneName').val()),     // Milestone Name
+        $('#milestoneDate').val(),     // Milestone Start Date
+        $('#milestoneDate').val(),     // Milestone End Date
+        '#ff00ff',                     // Milestone Color
+        '',                            // Link
+        1,                             // Milestone Indicator
+        toTitleCase($('#milestoneResource').val()), // Task Resource
+        '',                            // Percentage complete
+        0,                             // Group Indicator
+        $('#milestoneParent').val(),   // Parent group
+        0,                             // Task Tree Open/Close Indicator
+        ''));                          // Dependent Task
+      // Redraw the chart
+      resList.push(toTitleCase($('#milestoneResource').val()));
+      $('#milestoneResource').typeahead('destroy');
+      $('#milestoneResource').typeahead({
+        local : resList
+      });
+      vGanttChart.Draw();
+      vGanttChart.DrawDependencies();
+    }
+  });
+  $('#taskDelButton').on('click', function(e) {
+    e.preventDefault();
+	if (confirm('Do you want to delete this task ?')) {
+      $('#newTaskWindow').modal('hide'); 
+      // Add the task
+      vGanttChart.DeleteTaskItem(new JSGantt.TaskItem(
+        $('#taskID').val(),        // Task ID
+        toTitleCase($('#taskName').val()),      // Task Name
+        $('#taskStartDate').val(), // Task Start Date
+        $('#taskEndDate').val(),   // Task End Date
+        $('#taskColor').val(),     // Task Color
+        '',                        // Link
+        0,                         // Milestone Indicator
+        toTitleCase($('#taskResource').val()),  // Task Resource
+        $('#perComplete').val(),   // Percentage complete
+        0,                         // Group Indicator
+        $('#taskParent').val(),    // Parent group
+        1,                         // Task Tree Open/Close Indicator
+        $('#taskDepend').val()));  // Dependent Task
+        // Redraw the chart
+		// Remove from depend task list
+        dependList.splice({id:$('#taskID').val(), text:$('#taskName').val()});
+        $('#taskResource').typeahead('destroy');
+        $('#taskResource').typeahead({
+          local : resList
+        });
+        vGanttChart.Draw();
+        vGanttChart.DrawDependencies();
+	}
+    });
+  $('#taskEditButton').on('click', function(e) {
+    e.preventDefault();
+    // Validate the values
+    if (!$('#taskName').val()) {
+      $('#alertTask').show().find('strong').text('Please enter a task name');
+      $('#taskName').focus();
+    } else if (!$('#taskStartDate').val()) {
+      $('#alertTask').show().find('strong').text('Please enter a start date for this task.');
+      $('#taskStartDate').focus();
+    } else if (!$('#taskEndDate').val()) {
+      $('#alertTask').show().find('strong').text('Please enter a end date for this task.');
+      $('#taskEndDate').focus();
+    } else if (!$('#taskResource').val()) {
+      $('#alertTask').show().find('strong').text('Please enter or choose a resource for this task.');
+      $('#taskResource').focus();
+    } else if (!$('#taskParent').val()) {
+      $('#alertTask').show().find('strong').text('Please choose a task group for this task.');
+      $('#taskParent').focus();
+    } else {
+      $('#newTaskWindow').modal('hide'); 
+      // Add the task
+      vTaskID = vTaskID + 1;
+      vGanttChart.EditTaskItem(new JSGantt.TaskItem(
+        $('#taskID').val(),        // Task ID
+        toTitleCase($('#taskName').val()),      // Task Name
+        $('#taskStartDate').val(), // Task Start Date
+        $('#taskEndDate').val(),   // Task End Date
+        $('#taskColor').val(),     // Task Color
+        '',                        // Link
+        0,                         // Milestone Indicator
+        toTitleCase($('#taskResource').val()),  // Task Resource
+        $('#perComplete').val(),   // Percentage complete
+        0,                         // Group Indicator
+        $('#taskParent').val(),    // Parent group
+        1,                         // Task Tree Open/Close Indicator
+        $('#taskDepend').val()));  // Dependent Task
+        // Redraw the chart
+        resList.push(toTitleCase($('#taskResource').val()));
+        dependList.push({id:vTaskID, text:$('#taskName').val()});
+        $('#taskResource').typeahead('destroy');
+        $('#taskResource').typeahead({
+          local : resList
+        });
+        vGanttChart.Draw();
+        vGanttChart.DrawDependencies();
+      }
+    });
   $('#taskSaveButton').on('click', function(e) {
     e.preventDefault();
     // Validate the values
@@ -223,20 +489,20 @@ function format(item) {
       vTaskID = vTaskID + 1;
       vGanttChart.AddTaskItem(new JSGantt.TaskItem(
         vTaskID,                   // Task ID
-        $('#taskName').val(),      // Task Name
+        toTitleCase($('#taskName').val()),      // Task Name
         $('#taskStartDate').val(), // Task Start Date
         $('#taskEndDate').val(),   // Task End Date
         $('#taskColor').val(),     // Task Color
         '',                        // Link
         0,                         // Milestone Indicator
-        $('#taskResource').val(),  // Task Resource
+        toTitleCase($('#taskResource').val()),  // Task Resource
         $('#perComplete').val(),   // Percentage complete
         0,                         // Group Indicator
         $('#taskParent').val(),    // Parent group
         1,                         // Task Tree Open/Close Indicator
         $('#taskDepend').val()));  // Dependent Task
         // Redraw the chart
-        resList.push($('#taskResource').val());
+        resList.push(toTitleCase($('#taskResource').val()));
         dependList.push({id:vTaskID, text:$('#taskName').val()});
         $('#taskResource').typeahead('destroy');
         $('#taskResource').typeahead({
